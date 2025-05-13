@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-EMAIL_SENDER = os.getenv("EMAIL_SENDER")
-EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_SENDER = st.secrets["email"]["sender"]
+EMAIL_PASSWORD = st.secrets["email"]["password"]
 EMAIL_RECEIVER = "esraamaghrabi14@gmail.com"  # Admin email
 def send_email(user_email, language="English"):
     try:
