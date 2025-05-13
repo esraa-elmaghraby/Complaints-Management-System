@@ -14,6 +14,11 @@ st.set_page_config(page_title="Complaints Management System", layout="wide")
 
 st.markdown("""
     <style>
+    <style>
+/* --- Global Font Color --- */
+body, div, p, span, label, h1, h2, h3, h4, h5, h6, li, a, strong {
+    color: #7c6758 !important;
+}
 /* --- Buttons Styling --- */
 .stButton > button {
     background-color: #416445;
