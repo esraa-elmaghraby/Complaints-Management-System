@@ -5,20 +5,19 @@ import streamlit as st
 EMAIL_SENDER = st.secrets["email"]["sender"]
 EMAIL_PASSWORD = st.secrets["email"]["password"]
 EMAIL_RECEIVER = "esraamaghrabi14@gmail.com"  # Admin email
-def send_email(user_email, language="English"):
+
+def send_email(user_email, name, category, priority, content, language="English"):
     try:
-        # Construct email message
         msg = EmailMessage()
         msg['From'] = EMAIL_SENDER
         msg['To'] = user_email
 
-        # Define email content based on language
         if language == "Arabic":
             msg['Subject'] = "تم استلام الشكوى"
             msg.set_content(
-                "عزيزي المستخدم،\n\n"
+                f"عزيزي {name},\n\n"
                 "تم استلام شكواك بنجاح وهي الآن قيد المراجعة من قبل فريقنا المختص.\n"
-                "سنعمل على التعامل معها في أسرع وقت ممكن واتخاذ الإجراءات اللازمة.\n\n"
+                "سنعمل على التعامل معها في أسرع وقت ممكن.\n\n"
                 "شكرًا لتواصلك معنا.\n\n"
                 "مع أطيب التحيات،\n"
                 "فريق إدارة الشكاوى"
@@ -26,25 +25,32 @@ def send_email(user_email, language="English"):
         else:
             msg['Subject'] = "Complaint Received"
             msg.set_content(
-                "Dear user,\n\n"
-                "We have received your complaint and it has been successfully submitted to our system.\n"
-                "Our team is currently reviewing it and will take the necessary steps as soon as possible.\n\n"
-                "Thank you for bringing this to our attention.\n\n"
+                f"Dear {name},\n\n"
+                "We have received your complaint and it has been submitted to our system.\n"
+                "Our team is reviewing it and will take the necessary actions shortly.\n\n"
+                "Thank you for contacting us.\n\n"
                 "Best regards,\n"
                 "Complaints Management Team"
             )
 
-        # Send email to user
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
             smtp.send_message(msg)
 
-        # Also send a copy to admin
         msg_to_admin = EmailMessage()
-        msg_to_admin.set_content(msg.get_payload())
-        msg_to_admin['Subject'] = f"[ADMIN COPY] {msg['Subject']}"
         msg_to_admin['From'] = EMAIL_SENDER
         msg_to_admin['To'] = EMAIL_RECEIVER
+        msg_to_admin['Subject'] = "New Complaint Submitted"
+        
+        msg_to_admin.set_content(
+            f"A new complaint has been submitted to the system:\n\n"
+            f"Name: {name}\n"
+            f"Email: {user_email}\n"
+            f"Category: {category}\n"
+            f"Priority: {priority}\n"
+            f"Complaint Content:\n{content}\n\n"
+            "Please follow up on this complaint via the admin dashboard."
+        )
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
             smtp.login(EMAIL_SENDER, EMAIL_PASSWORD)
