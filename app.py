@@ -12,6 +12,50 @@ from analytics import show_analytics
 # Page config
 st.set_page_config(page_title="Complaints Management System", layout="wide")
 
+st.markdown("""
+    <style>
+/* --- Buttons Styling --- */
+.stButton > button {
+    background-color: #672db4;
+    color: #FFFFFF !important;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px !important; 
+    font-size: 14px !important;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 300px !important; 
+    text-align: center;
+}
+.stButton > button:hover {
+    background-color: #551f98;
+}
+
+/* --- Metric Styling --- */
+.stMetric {
+    background-color: rgba(103, 45, 180, 0.15);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid rgba(103, 45, 180, 0.5);
+    box-shadow: 0 0 10px rgba(103, 45, 180, 0.7);
+    backdrop-filter: blur(5px);
+    text-align: center;
+}
+.stMetric > div > div > div > div {
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 24px;
+    font-weight: bold;
+}
+.stMetric:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s;
+    box-shadow: 0 0 15px rgba(103, 45, 180, 1);
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 # Initialize session state
 if "language" not in st.session_state:
     st.session_state.language = "English"
