@@ -1,7 +1,6 @@
 import smtplib
 from email.message import EmailMessage
-import os
-
+import streamlit as st
 
 EMAIL_SENDER = st.secrets["email"]["sender"]
 EMAIL_PASSWORD = st.secrets["email"]["password"]
