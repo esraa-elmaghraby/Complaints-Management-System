@@ -35,7 +35,7 @@ def file_complaint(conn, texts):
             conn.commit()
 
             # Send email to user and admin
-            send_email(email, "English")  # Send email in English by default
+            send_email(email, name, category, priority, content, language="English")  # Send email in English by default
             st.session_state.notifications.append(texts["complaint_success"])
 
 def manage_complaints(conn, texts):
