@@ -80,31 +80,21 @@ section = st.sidebar.selectbox(texts["select_section"], sections)
 
 # زر تغيير الباسورد في الشريط الجانبي
 if st.session_state.authenticated:
-    if st.sidebar.button("Change Password"):
-        st.session_state.change_password_mode = True
-        st.sidebar.markdown("---")
+    if st.sidebar.button("Change Password", key="change_password_button_sidebar"):
+        st.subheader("Change Your Password")
+        old_password = st.text_input("Enter old password", type="password")
+        new_password = st.text_input("Enter new password", type="password")
+        confirm_password = st.text_input("Confirm new password", type="password")
 
-# تغيير كلمة المرور (في حال كانت القيمة True في session state)
-if "change_password_mode" in st.session_state and st.session_state.change_password_mode:
-    # إدخال كلمة المرور القديمة والجديدة
-    st.subheader("Change Your Password")
-    old_password = st.text_input("Enter old password", type="password")
-    new_password = st.text_input("Enter new password", type="password")
-    confirm_password = st.text_input("Confirm new password", type="password")
-
-    # شرط التحقق من تطابق الباسورد الجديد مع تأكيده
-    if new_password == confirm_password:
-        if st.button("Change Password", key="change_password_button_sidebar"):
-            success = change_password(st.session_state.username, old_password, new_password, conn)
-            if success:
-                st.success("Password updated successfully!")
-                st.session_state.change_password_mode = False  # إغلاق وضع تغيير الباسورد
-                st.rerun()  # إعادة تحميل الصفحة
-            else:
-                st.error("Old password is incorrect.")
-    else:
-        st.error("New password and confirmation do not match.")
-
+        if new_password == confirm_password:
+            if st.button("Change Password"):
+                success = change_password(st.session_state.username, old_password, new_password, conn)
+                if success:
+                    st.success("Password updated successfully!")
+                else:
+                    st.error("Failed to update password. Please check your old password.")
+        else:
+            st.error("Passwords do not match!")
 
 # زر تسجيل الخروج يظهر فقط إذا كان المستخدم مسجل دخول
 if st.session_state.authenticated:
