@@ -16,7 +16,7 @@ st.markdown("""
     <style>
 /* --- Buttons Styling --- */
 .stButton > button {
-    background-color: #672db4;
+    background-color: #416445;
     color: #FFFFFF !important;
     border: none;
     border-radius: 5px;
@@ -28,7 +28,7 @@ st.markdown("""
     text-align: center;
 }
 .stButton > button:hover {
-    background-color: #551f98;
+    background-color: #36543a;
 }
 
 /* --- Metric Styling --- */
