@@ -24,7 +24,6 @@ st.markdown("""
     font-size: 14px !important;
     font-weight: bold;
     transition: background-color 0.3s;
-    width: 300px !important; 
     text-align: center;
 }
 .stButton > button:hover {
