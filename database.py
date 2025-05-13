@@ -21,19 +21,7 @@ def initialize_db(conn):
             status TEXT NOT NULL DEFAULT 'In Progress',
             created_at TEXT NOT NULL
         )
-    """)
-
-    # جدول التقييمات
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS feedback (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            complaint_id INTEGER NOT NULL,
-            rating INTEGER,
-            comments TEXT,
-            FOREIGN KEY(complaint_id) REFERENCES complaints(id)
-        )
-    """)
-
+        
     # جدول المديرين بدون first_login، هنضيفه بعدين لو ناقص
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS admins (
