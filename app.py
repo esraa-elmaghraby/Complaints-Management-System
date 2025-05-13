@@ -94,7 +94,7 @@ if "change_password_mode" in st.session_state and st.session_state.change_passwo
 
     # شرط التحقق من تطابق الباسورد الجديد مع تأكيده
     if new_password == confirm_password:
-        if st.button("Change Password", key="change_password_button"):
+        if st.button("Change Password", key="change_password_button_sidebar"):
             success = change_password(st.session_state.username, old_password, new_password, conn)
             if success:
                 st.success("Password updated successfully!")
@@ -128,7 +128,7 @@ if st.session_state.authenticated:
         
         # شرط التحقق من تطابق الباسورد الجديد مع تأكيده
         if new_password == confirm_password:
-            if st.button("Change Password"):
+            if st.button("Change Password", key="change_password_button_main"):
                 success = change_password(st.session_state.username, old_password, new_password, conn)
                 if success:
                     # تحديث حالة أول مرة دخول (first_login) بعد تغيير الباسورد
