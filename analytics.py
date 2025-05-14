@@ -3,7 +3,6 @@ import plotly.express as px
 import plotly.io as pio
 import pandas as pd
 
-# Set default plotly theme
 pio.templates.default = "plotly_white"
 
 colors = ["#03265b", "#416445", "#38b6ff"]
