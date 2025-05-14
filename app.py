@@ -43,7 +43,6 @@ if "notifications" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
-# Show avatar and username at the top of sidebar if logged in
 if st.session_state.authenticated:
     st.sidebar.markdown(
         """
@@ -72,7 +71,7 @@ from database import create_default_admin
 # Database connection
 conn = get_db_connection()
 initialize_db(conn)
-create_default_admin(conn, "admin", "1234")  # باسورد افتراضي
+create_default_admin(conn, "admin", "1234") 
 
 # Admin login UI
 if not st.session_state.authenticated:
@@ -80,7 +79,6 @@ if not st.session_state.authenticated:
     with admin_login_expanded:
         st.subheader(texts["admin_login"])
         username = st.text_input(texts["username"])
-                # تحقق إذا كان المستخدم أول مرة يدخل
         password = st.text_input(texts["password"], type="password")
 
         if st.button(texts["login_button"]):
@@ -88,7 +86,7 @@ if not st.session_state.authenticated:
             if success:
                 st.session_state.authenticated = True
                 st.session_state.username = username
-                st.session_state.first_login = first_login  # تخزين قيمة first_login
+                st.session_state.first_login = first_login 
                 st.success(texts["login_success"])
                 st.rerun()
             else:
@@ -99,35 +97,30 @@ if not st.session_state.authenticated:
 sections = [texts["manage_complaints"], texts["analytics"], texts["export_data"]] if st.session_state.authenticated else [texts["file_complaint"]]
 section = st.sidebar.selectbox(texts["select_section"], sections)
 
-# زر تغيير الباسورد في الشريط الجانبي
 if st.session_state.authenticated:
     if st.sidebar.button("Change Password"):
         st.session_state.change_password_mode = True
         st.sidebar.markdown("---")
 
-# تغيير كلمة المرور (في حال كانت القيمة True في session state)
 if "change_password_mode" in st.session_state and st.session_state.change_password_mode:
-    # إدخال كلمة المرور القديمة والجديدة
     st.subheader("Change Your Password")
     old_password = st.text_input("Enter old password", type="password")
     new_password = st.text_input("Enter new password", type="password")
     confirm_password = st.text_input("Confirm new password", type="password")
 
-    # شرط التحقق من تطابق الباسورد الجديد مع تأكيده
     if new_password == confirm_password:
         if st.button("Change Password", key="change_password_button_sidebar"):
             success = change_password(st.session_state.username, old_password, new_password, conn)
             if success:
                 st.success("Password updated successfully!")
-                st.session_state.change_password_mode = False  # إغلاق وضع تغيير الباسورد
-                st.rerun()  # إعادة تحميل الصفحة
+                st.session_state.change_password_mode = False 
+                st.rerun()  
             else:
                 st.error("Old password is incorrect.")
     else:
         st.error("New password and confirmation do not match.")
 
 
-# زر تسجيل الخروج يظهر فقط إذا كان المستخدم مسجل دخول
 if st.session_state.authenticated:
     if st.sidebar.button("Log out", key="log_out_button"):
         st.session_state.authenticated = False
@@ -142,24 +135,21 @@ if st.session_state.authenticated:
         st.warning("You are using the default password. Please change it to continue.")
     
         st.subheader("Change Your Password")
-        # تأكد من أنك عرفت المتغيرات في مكان سابق
         old_password = st.text_input("Enter old password", type="password")
         new_password = st.text_input("Enter new password", type="password")
         confirm_password = st.text_input("Confirm new password", type="password")
         
-        # شرط التحقق من تطابق الباسورد الجديد مع تأكيده
         if new_password == confirm_password:
             if st.button("Change Password", key="change_password_button_main"):
                 success = change_password(st.session_state.username, old_password, new_password, conn)
                 if success:
-                    # تحديث حالة أول مرة دخول (first_login) بعد تغيير الباسورد
                     cursor = conn.cursor()
                     cursor.execute("UPDATE admins SET first_login = 0 WHERE username = ?", (st.session_state.username,))
                     conn.commit()
         
                     st.success("Password updated successfully!")
-                    st.session_state.first_login = False  # تحديث في session state
-                    st.rerun()  # إعادة تحميل الصفحة
+                    st.session_state.first_login = False  
+                    st.rerun()
                 else:
                     st.error("Old password is incorrect.")
 
