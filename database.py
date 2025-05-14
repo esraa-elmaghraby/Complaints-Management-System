@@ -9,7 +9,6 @@ def get_db_connection():
 def initialize_db(conn):
     cursor = conn.cursor()
 
-    # جدول الشكاوى
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS complaints (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +22,6 @@ def initialize_db(conn):
         )
     """)
 
-    # جدول التقييمات
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS feedback (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +32,6 @@ def initialize_db(conn):
         )
     """)
 
-    # جدول المديرين بدون first_login، هنضيفه بعدين لو ناقص
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS admins (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +40,6 @@ def initialize_db(conn):
         )
     """)
 
-    # نتأكد إن عمود first_login موجود، ولو مش موجود نضيفه
     update_admins_schema_if_needed(conn)
 
 def update_admins_schema_if_needed(conn):
@@ -59,7 +55,7 @@ def authenticate(username, password, conn):
     cursor.execute("SELECT * FROM admins WHERE username = ?", (username,))
     admin = cursor.fetchone()
     if admin and check_password_hash(admin[2], password):
-        return True, bool(admin[3])  # admin[3] هو first_login
+        return True, bool(admin[3])  
     return False, False
 
 def create_default_admin(conn, username, password):
